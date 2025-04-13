@@ -14,7 +14,7 @@ passport.use(new GitHubStrategy({
     try {
       // const user = await User.findOrCreate({ githubId: profile.id });
       // return done(null, user);
-      return res.json(done);
+      return done(null,profile);
     } catch (err) {
       return done(err);
     }
@@ -29,7 +29,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     //const user = await User.findById(id);
-    done(null);
+    done(null, id);
   } catch (err) {
     done(err, null);
   }
