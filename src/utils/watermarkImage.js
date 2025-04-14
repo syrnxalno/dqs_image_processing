@@ -9,6 +9,7 @@ async function watermarkImage(){
              </svg>`
           );
           image.composite([{ input: watermark, gravity: 'southeast' }]).toFile('src/test/watermark.png')
+          return watermark;
     }
     catch(err){
         return error;
