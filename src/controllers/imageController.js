@@ -1,6 +1,7 @@
 import fetchMetaData from "../utils/readImage.js";
 import resizeImage from "../utils/resizeImage.js";
 import compressImg from "../utils/compressImage.js";
+import watermarkImage from "../utils/watermarkImage.js";
 
 
 export const imgMetaDataContoller = async(req,res) =>{
@@ -28,6 +29,16 @@ export const imgCompressController = async(req,res) =>{
         const compress = await compressImg();
         res.json(compress);
     }catch(err){
+        res.json(err);
+    }
+}
+
+export const watermarkImageController = async(req,res)=>{
+    try{
+        const watermark = await watermarkImage();
+        res.json(watermark);
+    }
+    catch(err){
         res.json(err);
     }
 }
