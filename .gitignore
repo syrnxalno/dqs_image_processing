@@ -5,6 +5,7 @@ yarn-error.log
 package-lock.json
 test-resize
 test.rest
+test
 
 # Environment variables
 .env
