@@ -6,7 +6,7 @@ package-lock.json
 test-resize
 test.rest
 test
-
+testJobAdder.js
 
 
 # Environment variables
