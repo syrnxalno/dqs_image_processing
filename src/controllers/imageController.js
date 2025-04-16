@@ -1,8 +1,7 @@
 import fetchMetaData from "../utils/readImage.js";
-import resizeImage from "../utils/resizeImage.js";
-import compressImg from "../utils/compressImage.js";
 import watermarkImage from "../utils/watermarkImage.js";
-import add from "../queues/resizeQueue.js";
+import addToResize from "../queues/resizeQueue.js";
+import addtoCompress from "../queues/compressQueue.js";
 
 
 export const imgMetaDataContoller = async(req,res) =>{
@@ -20,7 +19,7 @@ export const imgResizeController = async (req, res) => {
         const inputPath = 'src/images/test.png'; // Replace with dynamic value if needed
         const outputPath = 'src/test/test(resize).png';
 
-        await add({
+        await addToResize({
             name: "resizeImage",
             data: {
                 inputPath,
@@ -40,11 +39,26 @@ export const imgResizeController = async (req, res) => {
 };
 
 export const imgCompressController = async(req,res) =>{
-    try{
-        const compress = await compressImg();
-        res.json(compress);
-    }catch(err){
-        res.json(err);
+    try {
+        const inputPath = 'src/images/test.png'; // Replace with dynamic value if needed
+        const outputPath = 'src/test/test(compress).png';
+
+        await addtoCompress({
+            name: "compressImage",
+            data: {
+                inputPath,
+                outputPath
+            }
+        });
+
+        res.status(200).json({
+            message: 'Compress job added to the queue',
+            inputPath,
+            outputPath
+        });
+    } catch (err) {
+        console.error("Failed to queue compress job:", err);
+        res.status(500).json({ error: 'Failed to add compress job' });
     }
 }
 
