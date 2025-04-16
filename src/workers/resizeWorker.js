@@ -8,7 +8,7 @@ const jobHandler = {
 const processJob = async (job) => {
     const handler = jobHandler[job.name];
     if (handler) {
-        console.log(`Processing job with name : ${job.name}`);
+        console.log(`Resize worker processing job with name : ${job.name}`);
         await handler(job);
     }
 };
@@ -16,9 +16,9 @@ const processJob = async (job) => {
 const worker = new Worker("resizeQueue", processJob, { connection: redisConnect });
 
 worker.on("completed",(job) =>{
-    console.log(`Process ${job.id} has finished`);
+    console.log(`Resize process ${job.id} has finished`);
 });
 
 worker.on("failed",(job, err) =>{
-    console.log(`Process ${job.id} has failed with error : `+err);
+    console.log(`Resize process ${job.id} has failed with error : `+err);
 });
