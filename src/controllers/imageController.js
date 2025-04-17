@@ -1,7 +1,8 @@
 import fetchMetaData from "../utils/readImage.js";
-import watermarkImage from "../utils/watermarkImage.js";
 import addToResize from "../queues/resizeQueue.js";
 import addtoCompress from "../queues/compressQueue.js";
+import addToWatermark from "../queues/watermarkQueue.js";
+
 
 
 export const imgMetaDataContoller = async(req,res) =>{
@@ -63,11 +64,25 @@ export const imgCompressController = async(req,res) =>{
 }
 
 export const watermarkImageController = async(req,res)=>{
-    try{
-        const watermark = await watermarkImage();
-        res.json(watermark);
-    }
-    catch(err){
-        res.json(err);
+    try {
+        const inputPath = 'src/images/test.png'; // Replace with dynamic value if needed
+        const outputPath = 'src/test/test(watermark).png';
+
+        await addToWatermark({
+            name: "watermarkImage",
+            data: {
+                inputPath,
+                outputPath
+            }
+        });
+
+        res.status(200).json({
+            message: 'Watermark job added to the queue',
+            inputPath,
+            outputPath
+        });
+    } catch (err) {
+        console.error("Failed to queue watermark job:", err);
+        res.status(500).json({ error: 'Failed to add watermark job' });
     }
 }

@@ -1,20 +1,24 @@
-import sharp from 'sharp'
+import sharp from "sharp";
 
-async function watermarkImage(){
+async function watermarkImage(job){
     try{
-        const image = await sharp('src/images/test.png');
+        const { inputPath = 'src/images/test.png', outputPath = 'src/test/test(watermark).png' } = job.data;
         const watermark = Buffer.from(
             `<svg width="300" height="100">
                <text x="0" y="50" font-size="24" fill="white" opacity="0.5">© watermark</text>
              </svg>`
-          );
-          image.composite([{ input: watermark, gravity: 'southeast' }]).toFile('src/test/watermark.png')
-          return watermark;
+        );
+
+        await sharp(inputPath) 
+            .composite([{ input: watermark, gravity: 'southeast' }])
+            .toFile(outputPath);
+
+        return { status: 'success', outputPath };
     }
     catch(err){
-        return error;
+        console.error("Error in watermarkImage:", err);
+        return { status: 'error', message: err.message };
     }
-   
 }
 
 export default watermarkImage;
