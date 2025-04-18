@@ -13,12 +13,12 @@ const processJob = async (job) => {
     }
 };
 
-const worker = new Worker("watermarkQueue", processJob, { connection: redisConnect });
+const worker3 = new Worker("watermarkQueue", processJob, { connection: redisConnect });
 
-worker.on("completed",(job) =>{
+worker3.on("completed",(job) =>{
     console.log(`Watermark process ${job.id} has finished`);
 });
 
-worker.on("failed",(job, err) =>{
+worker3.on("failed",(job, err) =>{
     console.log(`Watermark process ${job.id} has failed with error : `+err);
 });
