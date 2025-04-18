@@ -14,11 +14,11 @@ const processJob = async(job) =>{
     }
 }
 
-const worker = new Worker('compressQueue',processJob, {connection:redisConnect})
-worker.on("completed",(job)=>{
+const worker1 = new Worker('compressQueue',processJob, {connection:redisConnect})
+worker1.on("completed",(job)=>{
     console.log(`Compress process ${job.id} has finished`)
 })
 
-worker.on("failed",(job, err) =>{
+worker1.on("failed",(job, err) =>{
     console.log(`Compress process ${job.id} has failed with error : `+err);
 });

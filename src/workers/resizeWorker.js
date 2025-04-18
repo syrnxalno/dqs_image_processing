@@ -13,12 +13,12 @@ const processJob = async (job) => {
     }
 };
 
-const worker = new Worker("resizeQueue", processJob, { connection: redisConnect });
+const worker2 = new Worker("resizeQueue", processJob, { connection: redisConnect });
 
-worker.on("completed",(job) =>{
+worker2.on("completed",(job) =>{
     console.log(`Resize process ${job.id} has finished`);
 });
 
-worker.on("failed",(job, err) =>{
+worker2.on("failed",(job, err) =>{
     console.log(`Resize process ${job.id} has failed with error : `+err);
 });
