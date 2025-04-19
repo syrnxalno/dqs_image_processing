@@ -1,10 +1,10 @@
 import express from 'express'
 import {saveImageController, imgResizeController, imgCompressController, watermarkImageController} from '../controllers/imageController.js'
-
+import '../workers/resizeWorker.js'
+import '../workers/compressWorker.js'
+import '../workers/watermarkWorker.js'
+import '../workers/saveimageWorker.js'
 const router = express.Router();
-router.get('/resize',imgResizeController);
-router.get('/compress',imgCompressController);
-router.get('/watermark', watermarkImageController);
-router.get('/save',saveImageController);
+router.get('/add', imgResizeController, imgCompressController, watermarkImageController, saveImageController);
 
 export default router;
