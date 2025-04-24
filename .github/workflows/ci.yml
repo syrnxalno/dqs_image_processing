@@ -3,23 +3,30 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  backend-build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-   # - name: Build project (optional)
-    #  run: npm run build
+      - name: Install dependencies
+        working-directory: src/backend
+        run: pnpm install
 
-  #  - name: Run tests (for later)
-  #    run: npm test
+      - name: Run dev script (optional, for check only)
+        working-directory: src/backend
+        run: pnpm run dev
+
+      # - name: Run tests (for later)
+      #   working-directory: src/backend
+      #   run: pnpm test
