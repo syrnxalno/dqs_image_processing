@@ -5,8 +5,4 @@ const resizeQueue = new Queue('resizeQueue',{
     connection : redisConnect
 })
 
-async function addToResize(job) {
-    await resizeQueue.add(job.name, job);
-}
-
-export default addToResize;
+export default resizeQueue;
