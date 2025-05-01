@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import redisConnect from "../config/redisConfig.js";
 import saveImage from "../utils/saveImage.js";
 
+try{
 const saveImageWorker = new Worker("saveImageQueue", async (job) => {
     console.log(`Save image worker processing job with name: ${job.name}`);
     return await saveImage(job);
@@ -14,3 +15,8 @@ saveImageWorker.on("completed", (job) => {
 saveImageWorker.on("failed", (job, err) => {
     console.log(`Save image process ${job.id} has failed with error: ` + err);
 });
+}
+catch (e) {
+    console.error("Error initializing saveImageWorker:", e);
+    throw e; 
+}

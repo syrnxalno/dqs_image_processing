@@ -18,5 +18,6 @@ try {
     });
   } catch (e) {
     console.error("Error initializing resizeWorker:", e);
+    throw e; 
   }
   
