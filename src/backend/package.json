@@ -1,6 +1,8 @@
 {
   "type": "module",
   "dependencies": {
+    "@bull-board/api": "^6.9.2",
+    "@bull-board/express": "^6.9.2",
     "bullmq": "^5.48.1",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
