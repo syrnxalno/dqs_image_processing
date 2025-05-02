@@ -4,6 +4,7 @@
     "@bull-board/api": "^6.9.2",
     "@bull-board/express": "^6.9.2",
     "bullmq": "^5.48.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
