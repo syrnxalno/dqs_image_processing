@@ -10,7 +10,10 @@ const __dirname = dirname(__filename);
 
 export const processImagePipeline = async (req, res) => {
     try {
-        const inputPath = path.resolve(__dirname, '../images/test.png');
+        if(!req.file){
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+        const inputPath = req.file.path;
         const resizedPath = path.resolve(__dirname, '../test/resized.png');
         const compressedPath = path.resolve(__dirname, '../test/compressed.png');
         const watermarkedPath = path.resolve(__dirname, '../test/watermarked.png');

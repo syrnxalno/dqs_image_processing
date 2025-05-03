@@ -29,21 +29,36 @@ export default function UploadPage() {
     e.preventDefault();
   };
 
-  const handleUpload = () => {
-    if (file) {
+  const handleUpload = async () => {
+    if (!file) return;
+  
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+    if (!uploadUrl) {
+      console.error('Upload URL is not defined. Check your .env setup.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('image', file);
+  
+    try {
       setProgress(0);
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            alert(`Upload complete: ${file.name}`);
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 200);
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error('Upload to backend failed');
+      }
+  
+      const result = await response.json();
+      console.log('Upload successful:', result);
+    } catch (err) {
+      console.log('Upload failed:', err);
     }
   };
+  
 
   const containerStyle: CSSProperties = {
     display: 'flex',
@@ -84,14 +99,7 @@ export default function UploadPage() {
     transition: 'background-color 0.3s ease',
   };
 
-  const previewStyle: CSSProperties = {
-    maxWidth: '100%',
-    maxHeight: '200px',
-    borderRadius: '0.5rem',
-    objectFit: 'contain',
-    padding: '0.5rem',
-    backgroundColor: '#111827',
-  };
+
 
   const progressBarContainerStyle: CSSProperties = {
     height: '8px',
@@ -163,35 +171,6 @@ export default function UploadPage() {
               style={{ display: 'none' }}
             />
           </div>
-
-          {previewUrl && (
-            <div style={{ position: 'relative', marginTop: '1rem', display: 'inline-block' }}>
-              <img src={previewUrl} alt="Preview" style={previewStyle} />
-              <button
-                onClick={() => {
-                  setFile(null);
-                  setPreviewUrl(null);
-                  setProgress(0);
-                }}
-                style={{
-                  position: 'absolute',
-                  top: '-10px',
-                  right: '-10px',
-                  background: '#ff4d4f',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '24px',
-                  height: '24px',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                }}
-              >
-                ✕
-              </button>
-            </div>
-          )}
 
           {progress > 0 && (
             <div style={progressBarContainerStyle}>
